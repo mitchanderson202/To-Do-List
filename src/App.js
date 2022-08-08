@@ -1,23 +1,43 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import DeleteImg  from "./images/trash-can.png";
 
 function App() {
+  const [input, setInput] = useState("");
+  const [toDo, setToDo] = useState([]);
+
+  const addItem = (item) => {
+    const newItem = {
+      id: item,
+      item:item
+    }
+
+    setToDo([...toDo, newItem]);
+    setInput("");
+  }
+  
+  const deleteItem = (id) => {
+    const oldList = toDo.filter((todo) => todo.id !== id);
+    setToDo(oldList);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>To Do List</h1>
+        <div className="input-component" type="submit">
+          <h4>Add Task:</h4>
+          <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          /> 
+          <button type="submit" onClick={() => addItem(input)}>Add</button>          
+        </div>
+      {toDo.map((todo) => (
+        <li className="list-component" key={todo.id}>{todo.id}
+          <img src={DeleteImg} onClick={() => deleteItem(todo.id)} className="image"></img>
+        </li>
+        ))}
     </div>
   );
 }
